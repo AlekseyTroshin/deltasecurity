@@ -23,7 +23,7 @@ class View
         }
 
         if (isAjax()) {
-            exit(json_encode($this->data));
+            exit(json_encode($this->data['books']));
         } else {
             ob_start();
             require_once $this->view;

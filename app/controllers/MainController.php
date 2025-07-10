@@ -11,9 +11,6 @@ class MainController extends Controller
 
     protected array $authors;
     protected array $genres;
-    protected string $booksSearch;
-    protected string $booksFromAuthors;
-    protected string $booksFromGenres;
 
     public function __construct(array $route = [])
     {
@@ -38,12 +35,23 @@ class MainController extends Controller
 
     public function search()
     {
+        header("Access-Control-Allow-Origin: *");
+        header("Content-Type: application/json");
 
         if (isset($_POST)) {
+
+            if (isAjax()) {
+                $json = file_get_contents('php://input');
+                $post = json_decode($json, true);
+            } else {
+                $post = $_POST;
+            }
+
             $searchBooks = [];
             $search = post('search');
 
-            $postStr = implode(',', $_POST);
+            $postStr = implode(',', $post);
+
             preg_match_all("#(?<=author-)\d+#", $postStr, $authors);
             preg_match_all("#(?<=genre-)\d+#", $postStr, $genres);
 

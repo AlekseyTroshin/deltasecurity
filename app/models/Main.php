@@ -13,7 +13,8 @@ class Main extends Model
         $search = '';
         $authors = '';
         $genres = '';
-
+//        debug($param, 1);
+//        в $param передаются значение $search $authors $genres
         if (is_array($param)) {
             extract($param);
         }

@@ -73,6 +73,12 @@ body {
 
 .spoiler-block.open {
     max-height: 700px;
+    transition: 0.5s;
+}
+
+.spoiler-block.open-cookies {
+    max-height: none;
+    transition: none;
 }
 
 .spoiler-button {
