@@ -20,7 +20,7 @@
                         <label for="firstName" class="form-label">Название книги</label>
                         <input type="text"
                                class="form-control"
-                               id="search-input"
+                               id="form-input"
                                name="search"
                                value="<?= $searchBooks['search'] ?? ''?>"
                                >
@@ -98,34 +98,38 @@
                     </div>
                 </div>
                 <button id="form-spoiler" class="spoiler-button w-100 btn btn-info btn-md
-                position-absolute b-5
-                text-white"
+                position-absolute b-5 text-white"
                         type="submit">
                     Спойлер
                 </button>
                 <hr class="my-4">
             </form>
             <?php
-            if (!empty($searchBooks['authors']) || !empty($searchBooks['genres'])) { ?>
-                <a id="form-clear" href="/clearAll" class="w-100 btn btn-primary btn-md"
-                   type="submit">
-                    Отчистить фильтр
-                </a>
-            <?php } ?>
+            $formClearClass = '';
+            if (!empty($searchBooks['authors']) || !empty($searchBooks['genres']) || !empty
+                ($searchBooks['search'])) {
+                $formClearClass = ' none';
+            }
+            ?>
+            <a id="form-clear" href="/clearAll" class="w-100 btn btn-primary btn-md<?=
+            $formClearClass ?>"
+               type="submit">
+                Отчистить поиск
+            </a>
         </div>
         <div id="books" class="col-12 col-lg-6">
             <?php foreach ($books as $book) { ?>
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col-auto d-lg-block">
                         <img class="bd-placeholder-img"
-                             width="140"
+                             width="100"
                              src="<?= $book['img'] ?>"
                              alt="<?= $book['name'] ?>">
                     </div>
-                    <div class="col p-4 d-flex flex-column position-static">
-                        <h3 class="mb-0">
+                    <div class="col p-2 d-flex flex-column position-static">
+                        <h4 class="mb-0">
                             <?= $book['name'] ?>
-                        </h3>
+                        </h4>
                         <p class="card-text">
                             <?= $book['description'] ?>
                         </p>

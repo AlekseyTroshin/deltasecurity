@@ -47,8 +47,9 @@ class MainController extends Controller
                 $post = $_POST;
             }
 
+
             $searchBooks = [];
-            $search = post('search');
+            $search = $post['search'] ?? post('search');
 
             $postStr = implode(',', $post);
 

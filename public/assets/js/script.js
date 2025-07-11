@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const spoilerButton = document.querySelector('.spoiler-button');
     const spoilerBlock = document.querySelector('.spoiler-block');
 
+    const form = document.getElementById('form')
+    const formInput = document.getElementById('form-input')
+    const formFind = document.getElementById('form-find')
+    const formClear = document.getElementById('form-clear')
+    const formGenres = document.getElementById('form-genres')
+    const checkboxesGenres = formGenres.querySelectorAll('.form-check-input')
+    const formAuthors = document.getElementById('form-authors')
+    const checkboxesAuthors = formAuthors.querySelectorAll('.form-check-input')
+    const books = document.getElementById('books')
+
     const keys = document.cookie
         .split("; ")
         .map(item => item.split('=', 1)[0])
@@ -13,49 +23,77 @@ document.addEventListener('DOMContentLoaded', () => {
     spoilerButton.addEventListener('click', (e) => {
         e.preventDefault()
         const elem = e.currentTarget
+
         elem.classList.add('close')
         spoilerBlock.classList.add('open')
+
         setTimeout(() => {
             elem.classList.add('none')
-        }, 500)
+        }, 300)
 
         let date = new Date(Date.now() + 600)
         document.cookie = "spoiler=true; expires=" + date
     })
 
-    const form = document.getElementById('form')
-    const formFind = document.getElementById('form-find')
-    const formSpoiler = document.getElementById('form-spoiler')
-    const formClear = document.getElementById('form-clear')
-    const formGenres = document.getElementById('form-genres')
-    const checkboxesGenres = formGenres.querySelectorAll('.form-check-input')
-    const formAuthors = document.getElementById('form-authors')
-    const checkboxesAuthors = formAuthors.querySelectorAll('.form-check-input')
-    const books = document.getElementById('books')
-
     checkboxesGenres.forEach(item => {
-        item.addEventListener('click', checkGenres)
+        item.addEventListener('click', checkedBoxItems)
     });
 
-    formFind.addEventListener('click', (e) => {
-        e.preventDefault()
+    checkboxesAuthors.forEach(item => {
+        item.addEventListener('click', checkedBoxItems)
+    });
 
-        console.log('1')
+    formFind.addEventListener('click', (e) => e.preventDefault())
+
+    formInput.addEventListener('blur', () => checkedBoxItems())
+    formInput.addEventListener('keydown', (e) => {
+        if (e.key === "Enter") {
+            checkedBoxItems()
+        }
     })
 
-    function checkGenres() {
-        let genres = '';
+    checkedBoxItems()
+    function checkedBoxItems() {
+        const data = {
+            'items' : '',
+            'search' : formInput.value ? `${formInput.value}` : null
+        }
+
         checkboxesGenres.forEach(item => {
             if (item.checked) {
-                genres += item.name + ','
+                data['items'] += item.name + ','
             }
         })
 
-        let data = genres.slice(0, -1)
+        checkboxesAuthors.forEach(item => {
+            if (item.checked) {
+                data['items'] += item.name + ','
+            }
+        })
+
+        data['items'] = data['items'].slice(0, -1)
         fetchRequest(data)
+
+        if (data['items'] || data['search']) {
+            formClear.classList.remove('none')
+        } else {
+            formClear.classList.add('none')
+        }
     }
 
-    function fetchRequest(body) {
+    formClear.addEventListener('click', (e) => {
+        e.preventDefault()
+
+        formInput.value = ''
+        checkboxesGenres.forEach(item => item.checked = false)
+        checkboxesAuthors.forEach(item => item.checked = false)
+
+        e.currentTarget.classList.add('none')
+
+        fetchRequest({})
+    })
+
+    function fetchRequest(data) {
         let url = '/search';
 
         fetch(url, {
@@ -64,8 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json;charset=utf-8',
                 'X-Requested-With': 'XMLHttpRequest'
             },
+
             body: JSON.stringify({
-                genres: body
+                items: data['items'],
+                search: data['search']
             })
         })
             .then(response => {
@@ -84,15 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col-auto d-lg-block">
                         <img class="bd-placeholder-img"
-                             width="140"
+                             width="100"
                              src="${item['img']}"
                              alt="${item['name']}">
                     </div>
-                    <div class="col p-4 d-flex flex-column position-static">
-                        <h3 class="mb-0">
+                    <div class="col p-2 d-flex flex-column position-static">
+                        <h4 class="mb-0">
                             ${item['name']}
-                        </h3>
-                        <p class="card-text">
+                        </h4>
+                        <p class="card-text mb-1">
                             ${item['description']}
                         </p>
                         <div class="mb-1 text-muted">автор: ${item['authors']}</div>
