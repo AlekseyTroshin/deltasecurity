@@ -7,6 +7,17 @@
 </footer>
 </div>
 
+<div class="loading-screen-wrapper">
+    <div class="loading-screen">
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+
 <script src="<?= PATH . "/assets/js/script.js" ?>"></script>
 
 </body>

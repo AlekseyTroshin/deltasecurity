@@ -29,5 +29,7 @@ use core\View;
                     <img class="logo mr-10" src="<?= PATH ?>/assets/img/icon/logo.svg" alt="logo">
                     <span class="fs-4">Simple header</span>
                 </div>
+                <button id="parser" class="btn btn-outline-danger rounded-pill
+                me-2">Парсить</button>
             </header>
         </div>

@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS books (
 CREATE TABLE IF NOT EXISTS authors (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    surname VARCHAR(255) NOT NULL,
-    patronymic VARCHAR(255) ,
     created_at TIMESTAMP default CURRENT_TIMESTAMP
 );
 
@@ -54,17 +52,17 @@ INSERT INTO genres (name) VALUES
       ('Поэзия');
 
 
-INSERT INTO authors (name, surname, patronymic) VALUES
-        ('Лев', 'Николаевич', 'Толстой'),
-        ('Фёдор', 'Михайлович', 'Достоевский'),
-        ('Джоан', 'Роулинг', ''),
-        ('Стивен', 'Кинг', ''),
-        ('Агата', 'Кристи', ''),
-        ('Джордж', 'Оруэлл', ''),
-        ('Рэй', 'Брэдбери', ''),
-        ('Айзек', 'Азимов', ''),
-        ('Эрнест', 'Хемингуэй', ''),
-        ('Антон', 'Павлович', 'Чехов');
+INSERT INTO authors (name) VALUES
+        ('Лев Николаевич Толстой'),
+        ('Фёдор Михайлович Достоевский'),
+        ('Джоан Роулинг'),
+        ('Стивен Кинг'),
+        ('Агата Кристи'),
+        ('Джордж Оруэлл'),
+        ('Рэй Брэдбери'),
+        ('Айзек Азимов'),
+        ('Эрнест Хемингуэй'),
+        ('Антон Павлович Чехов');
 
 INSERT INTO books (name, description, img) VALUES
         ('Война и мир', 'Эпический роман о войне 1812 года', '/assets/img/books/war_and_peace.jpg'),

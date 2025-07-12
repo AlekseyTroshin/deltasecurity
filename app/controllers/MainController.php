@@ -25,9 +25,9 @@ class MainController extends Controller
     {
         $searchBooks = sessionsGet('searchBooks');
         $books = $this->model->getBooks($searchBooks);
+        $books = $this->checkText($books);
         $authors = $this->authors;
         $genres = $this->genres;
-
         $this->getView(
             compact('books', 'authors', 'genres', 'searchBooks'),
             'main/index')->render();
@@ -46,7 +46,6 @@ class MainController extends Controller
             } else {
                 $post = $_POST;
             }
-
 
             $searchBooks = [];
             $search = $post['search'] ?? post('search');
@@ -85,6 +84,20 @@ class MainController extends Controller
     {
         sessionsClear('searchBooks');
         redirect('/');
+    }
+
+    // преобразуем все специальные символы в HTML
+    private function checkText(array $items): array
+    {
+        foreach ($items as &$item) {
+            foreach ($item as $v => &$attr) {
+                $attr = htmlspecialchars($attr);
+            }
+            unset($attr);
+        }
+        unset($item);
+
+        return $items;
     }
 
 }

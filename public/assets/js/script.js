@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body
+    const parserButton = document.getElementById('parser');
     const spoilerButton = document.querySelector('.spoiler-button');
     const spoilerBlock = document.querySelector('.spoiler-block');
 
@@ -6,11 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const formInput = document.getElementById('form-input')
     const formFind = document.getElementById('form-find')
     const formClear = document.getElementById('form-clear')
-    const formGenres = document.getElementById('form-genres')
-    const checkboxesGenres = formGenres.querySelectorAll('.form-check-input')
-    const formAuthors = document.getElementById('form-authors')
-    const checkboxesAuthors = formAuthors.querySelectorAll('.form-check-input')
+    let formGenres = document.getElementById('form-genres')
+    let checkboxesGenres = formGenres.querySelectorAll('.form-check-input')
+    let formAuthors = document.getElementById('form-authors')
+    let checkboxesAuthors = formAuthors.querySelectorAll('.form-check-input')
     const books = document.getElementById('books')
+
+    const loadingScreenWrapper = document.querySelector('.loading-screen-wrapper');
 
     const keys = document.cookie
         .split("; ")
@@ -35,16 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
         document.cookie = "spoiler=true; expires=" + date
     })
 
-    checkboxesGenres.forEach(item => {
-        item.addEventListener('click', checkedBoxItems)
-    });
 
-    checkboxesAuthors.forEach(item => {
-        item.addEventListener('click', checkedBoxItems)
-    });
+    function initCheckboxes() {
+        formGenres = document.getElementById('form-genres')
+        checkboxesGenres = formGenres.querySelectorAll('.form-check-input')
+        formAuthors = document.getElementById('form-authors')
+        checkboxesAuthors = formAuthors.querySelectorAll('.form-check-input')
+
+        checkboxesGenres.forEach(item => {
+            item.addEventListener('click', checkedBoxItems)
+        });
+
+        checkboxesAuthors.forEach(item => {
+            item.addEventListener('click', checkedBoxItems)
+        });
+
+        checkedBoxItems()
+    }
+
+    initCheckboxes()
 
     formFind.addEventListener('click', (e) => e.preventDefault())
-
     formInput.addEventListener('blur', () => checkedBoxItems())
     formInput.addEventListener('keydown', (e) => {
         if (e.key === "Enter") {
@@ -52,11 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    checkedBoxItems()
     function checkedBoxItems() {
         const data = {
-            'items' : '',
-            'search' : formInput.value ? `${formInput.value}` : null
+            'items': '',
+            'search': formInput.value ? `${formInput.value}` : null
         }
 
         checkboxesGenres.forEach(item => {
@@ -117,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderBooks(items) {
-        let out = '';
+        let out = ''
 
         items.forEach(item => {
             out += `
@@ -133,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${item['name']}
                         </h4>
                         <p class="card-text mb-1">
-                            ${item['description']}
+                            ${item['description'].slice(0, 40)}...
                         </p>
                         <div class="mb-1 text-muted">автор: ${item['authors']}</div>
                         <div class="mb-1 text-muted">жанр: ${item['genres']}</div>
@@ -146,23 +160,85 @@ document.addEventListener('DOMContentLoaded', () => {
         books.innerHTML = out;
     }
 
-});
+    function renderAuthors(items) {
+        let out = '<h4 class="mb-3">Авторы</h4>'
 
-// authors
-//     :
-//     "Джоан Роулинг ,Лев Николаевич Толстой,Фёдор Михайлович Достоевский"
-// description
-//     :
-//     "Эпический роман о войне 1812 года"
-// genres
-//     :
-//     "Исторический роман,Роман"
-// id
-//     :
-//     1
-// img
-//     :
-//     "/assets/img/books/war_and_peace.jpg"
-// name
-//     :
-//     "Война и мир"
+        items.forEach(item => {
+            out += `
+            <div class="form-check">
+                <input
+                    type="checkbox"
+                    name="author-${item['id']}"
+                    class="form-check-input rounded-pill"
+                    id="author-${item['id']}"
+                    value="author-${item['id']}"
+                    >
+                <label className="form-check-label" for="author-${item['id']}">
+                    ${item['name']}
+                </label>
+            </div>
+            `
+        })
+
+        formAuthors.innerHTML = out
+    }
+
+    function renderGenres(items) {
+        let out = '<h4 class="mb-3">Жанры</h4>'
+
+        items.forEach(item => {
+            out += `
+            <div class="form-check">
+                <input type="checkbox"
+                       name="genre-${item['id']}"
+                       class="form-check-input rounded-pill"
+                       id="genre-${item['id']}"
+                       value="genre-${item['id']}"
+                    >
+                <label className="form-check-label" for="genre-${item['id']}">
+                    ${item['name']}
+                </label>
+            </div>
+            `
+        })
+
+        formGenres.innerHTML = out
+    }
+
+
+    parserButton.addEventListener('click', async (e) => {
+        e.preventDefault()
+        const url = '/parser';
+
+        try {
+            loadingScreenWrapper.classList.remove('close')
+            loadingScreenWrapper.classList.add('open')
+
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => {
+                    return response.json()
+                })
+                .then(items => {
+                    renderBooks(items['books'])
+                    renderAuthors(items['authors'])
+                    renderGenres(items['genres'])
+                    initCheckboxes()
+                });
+        } catch (error) {
+            console.error('Error:', error)
+            return []
+        } finally {
+            loadingScreenWrapper.classList.add('close')
+            setTimeout(() => {
+                loadingScreenWrapper.classList.remove('open')
+            }, 300)
+        }
+    })
+
+});

@@ -6,7 +6,7 @@
 
 ?>
 <div class="container">
-    <a href="/" class="btn btn-outline-primary me-2">Главная</a>
+    <a href="/" class="btn btn-outline-primary me-2 rounded-pill">Главная</a>
     <hr class="my-4">
     <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
         <div class="col-auto d-lg-block">

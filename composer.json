@@ -6,6 +6,9 @@
     }
   },
   "require": {
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-dom": "*",
+    "ext-mbstring": "*",
+    "ext-libxml": "*"
   }
 }

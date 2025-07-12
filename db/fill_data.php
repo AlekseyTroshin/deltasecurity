@@ -48,7 +48,7 @@ try {
         ['Вишневый сад', 'Пьеса о жизни русских помещиков', 'cherry_orchard.jpg']
     ];
 
-    $stmt = $conn->prepare("INSERT INTO books (title, description, img) VALUES (:title, :desc, :img)");
+    $stmt = $conn->prepare("INSERT INTO books (name, description, img) VALUES (:title, :desc, :img)");
     foreach ($books as $book) {
         $stmt->execute([':title' => $book[0], ':desc' => $book[1], ':img' => $book[2]]);
     }

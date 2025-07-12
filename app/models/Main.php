@@ -13,7 +13,6 @@ class Main extends Model
         $search = '';
         $authors = '';
         $genres = '';
-//        debug($param, 1);
 //        в $param передаются значение $search $authors $genres
         if (is_array($param)) {
             extract($param);
@@ -54,7 +53,7 @@ class Main extends Model
                 b.description AS description,
                 b.img AS img,
                 GROUP_CONCAT(DISTINCT g.name) AS genres,
-                GROUP_CONCAT(DISTINCT CONCAT(a.name, ' ', a.surname, ' ', a.patronymic)) AS authors
+                GROUP_CONCAT(DISTINCT a.name) AS authors
             FROM books AS b
             LEFT JOIN book_genres AS bg ON b.id = bg.book_id
             LEFT JOIN genres AS g ON g.id = bg.genre_id
@@ -87,7 +86,7 @@ class Main extends Model
         return $this->getFetchAll($query);
     }
 
-    public function getFetchAll(string $query): array
+    private function getFetchAll(string $query): array
     {
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }

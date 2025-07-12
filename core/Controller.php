@@ -14,7 +14,6 @@ abstract class Controller
         protected array $route = [],
     )
     {
-
         $this->getModel();
         $this->controllerAction();
     }

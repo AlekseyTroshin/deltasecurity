@@ -19,7 +19,7 @@
                     <div class="col-sm-8">
                         <label for="firstName" class="form-label">Название книги</label>
                         <input type="text"
-                               class="form-control"
+                               class="form-control rounded-pill"
                                id="form-input"
                                name="search"
                                value="<?= $searchBooks['search'] ?? ''?>"
@@ -28,7 +28,7 @@
 
                     <div class="col-sm-4">
                         <label for="firstName" class="form-label">&nbsp;</label>
-                        <button id="form-find" class="w-100 btn btn-primary btn-md" type="submit">
+                        <button id="form-find" class="w-100 btn btn-primary btn-md rounded-pill" type="submit">
                             Поиск
                         </button>
                     </div>
@@ -45,7 +45,6 @@
 
                         foreach ($authors as $author) {
                             $authorChecked = '';
-                            $fullName = "{$author['name']} {$author['patronymic']} {$author['surname']}";
                             $authorId = $author['id'];
 
                             if (in_array($authorId, $searchAuthors)) {
@@ -56,13 +55,13 @@
                                 <input
                                         type="checkbox"
                                         name="author-<?= $authorId ?>"
-                                        class="form-check-input"
+                                        class="form-check-input rounded-pill"
                                         id="author-<?= $authorId ?>"
                                         value="author-<?= $authorId ?>"
                                     <?= $authorChecked ?>
                                 >
                                 <label class="form-check-label" for="author-<?= $author['id'] ?>">
-                                    <?= $fullName; ?>
+                                    <?= $author['name']; ?>
                                 </label>
                             </div>
                         <?php } ?>
@@ -85,7 +84,7 @@
                             <div class="form-check">
                                 <input type="checkbox"
                                        name="genre-<?= $genreId ?>"
-                                       class="form-check-input"
+                                       class="form-check-input rounded-pill"
                                        id="genre-<?= $genreId ?>"
                                        value="genre-<?= $genreId ?>"
                                     <?= $genreChecked ?>
@@ -98,7 +97,7 @@
                     </div>
                 </div>
                 <button id="form-spoiler" class="spoiler-button w-100 btn btn-info btn-md
-                position-absolute b-5 text-white"
+                position-absolute b-5 text-white rounded-pill"
                         type="submit">
                     Спойлер
                 </button>
@@ -111,7 +110,7 @@
                 $formClearClass = ' none';
             }
             ?>
-            <a id="form-clear" href="/clearAll" class="w-100 btn btn-primary btn-md<?=
+            <a id="form-clear" href="/clearAll" class="w-100 btn btn-primary rounded-pill btn-md<?=
             $formClearClass ?>"
                type="submit">
                 Отчистить поиск
@@ -131,7 +130,7 @@
                             <?= $book['name'] ?>
                         </h4>
                         <p class="card-text">
-                            <?= $book['description'] ?>
+                            <?= mb_strimwidth($book['description'], 0, 40, "..."); ?>
                         </p>
                         <div class="mb-1 text-muted">автор: <?= $book['authors'] ?></div>
                         <div class="mb-1 text-muted">жанр: <?= $book['genres'] ?></div>
