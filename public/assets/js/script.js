@@ -213,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             loadingScreenWrapper.classList.remove('close')
             loadingScreenWrapper.classList.add('open')
+            formInput.value = ''
 
             await fetch(url, {
                 method: 'POST',

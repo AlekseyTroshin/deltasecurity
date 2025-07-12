@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS delta_security;
+
+USE delta_security;
+
 DROP TABLE IF EXISTS book_authors;
 DROP TABLE IF EXISTS book_genres;
 DROP TABLE IF EXISTS books;
@@ -7,7 +11,7 @@ DROP TABLE IF EXISTS genres;
 CREATE TABLE IF NOT EXISTS books (
     id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) DEFAULT '',
+    description TEXT,
     img VARCHAR(255),
     created_at TIMESTAMP default CURRENT_TIMESTAMP
 );
