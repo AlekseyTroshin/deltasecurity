@@ -1,6 +1,6 @@
 # test-work
 
-#### проект запускается с использованием php 8 + apach + mysql
+#### использованием php 8 + apach + mysql
 
 
 ### PHP
