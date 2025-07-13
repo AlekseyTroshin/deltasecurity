@@ -2,10 +2,11 @@
 
 #### использованием php 8 + apach + mysql
 
+#### старт проекта
+* запускаем composer install
+* из папки db -> create-table.sql импортируем дамп 
 
 ### PHP
-* запускаем composer install  / из папки {db -> create-table.sql} импортируем дамп 
-
 * app      -- рабочее приложение 
 * config   -- файлы настройки
 * core     -- каркас приложения
