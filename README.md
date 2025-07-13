@@ -4,7 +4,7 @@
 
 
 ### PHP
-* запускаем composer install
+* запускаем composer install  / из папки {db -> create-table.sql} импортируем дамп 
 
 * app      -- рабочее приложение 
 * config   -- файлы настройки
